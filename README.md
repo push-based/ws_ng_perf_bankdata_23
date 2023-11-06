@@ -10,9 +10,9 @@
 **Clone and install**
 
 ```bash
-git clone https://github.com/push-based/ws-perf-ng-poland.git
+git clone https://github.com/push-based/ws_ng_poland_2023.git
 
-cd ws-perf-ng-poland
+cd ws_ng_poland_2023
 npm install
 
 # (optional) if the step before didn't work, please try the following
