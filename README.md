@@ -44,5 +44,4 @@ npm run start
 * [Side effects & actions](exercises%2Fside-effects-actions.md)
 
 **Modern Angular Tasting Package:**  
-* [Defer Block](exercises%2Fdefer-block.md)
 * [New Control Flow](exercises%2Fnew-control-flow.md)
