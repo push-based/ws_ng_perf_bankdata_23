@@ -12,11 +12,11 @@ how to optimize our applications runtime performance by using `ChangeDetectionSt
 
 First we will create a component that will help us to debug change detection cycles in our application.
 
-Your task is to create a `DirtyChecksComponent` (standalone) which should serve as a performance debug utility.
+Your task is to create a `DirtyChecksComponent` (and `DirtyChecksModule`) which should serve as a performance debug utility.
 Whenever the application renders, it should increase a number in its template.
 
 To do so, the component should bind a `renders()` function inside the template which
-simply increases a local numeric variable everytime it is called.
+simply increase a local numeric variable everytime getting called.
 
 For the template use a `<code>` tag with the class `.dirty-checks`.
 
@@ -28,22 +28,20 @@ For the template use a `<code>` tag with the class `.dirty-checks`.
 ```
 </details>
 
-Afterwards, use the component in the `AppComponent` template and serve the application.
+Afterwards, use the component in the `AppComponents` template and serve the application.
 
 <details>
     <summary>show solution</summary>
 
 ```bash
 # generate component
-ng g c shared/dirty-checks --standalone --inline-style --inline-template --skip-tests
+ng g c shared/dirty-checks --standalone
 ```
 
-Add logic:
-
 ```typescript
-// src/app/shared/dirty-checks.component.ts
+// dirty-checks.component.ts
 
-import {Component, DoCheck} from "@angular/core";
+import { Component, ElementRef, NgModule } from "@angular/core";
 
 @Component({
   selector: "dirty-checks",
@@ -61,42 +59,39 @@ import {Component, DoCheck} from "@angular/core";
   ],
   standalone: true
 })
-export class DirtyChecksComponent implements DoCheck {
+export class DirtyChecksComponent {
   private _renders = 0;
 
-  ngDoCheck() {
-    this._renders++;
-  }
-
   renders() {
-    return this._renders;
+    return ++this._renders;
   }
 }
+
 ```
 
-Add import in `app.component.ts` and include it in the imports section
+Add import in `app.module.ts`:
 
 ```typescript
-// Include dirty checks component import here.
+// Exercise 3: Include dirty checks component import here.
 
-import {DirtyChecksComponent} from "./shared/dirty-checks/dirty-checks.component";
-
-@Component({
-    selector: 'app-root',
-    standalone: true,                                //👇
-    imports: [RouterOutlet, AppShellComponent, DirtyChecksComponent],
-  // ...
-})
+import { DirtyChecksComponent } from "./shared/dirty-checks.component";
 ```
 
-Add `<dirty-checks />` component in `app.component.ts` template:
+And include it in the imports section
+
+```typescript
+
+DirtyChecksComponent,
+```
+
+Add `<dirty-checks>` component in `app.component.ts` template:
 
 ```html
 template: `
+<!-- Exercise 3: Add dirty checks here -->
 <app-shell>
-  <!-- Add dirty checks here -->
-  <dirty-checks />
-  <router-outlet />
+  <dirty-checks></dirty-checks>
+  <router-outlet></router-outlet>
 </app-shell>
 `,
 ```
@@ -116,9 +111,9 @@ Perform different kinds of actions and note how the counter will increase by dif
 * tilt
 * switch dark/light mode
 
-## Use `ChangeDetectionStrategy.OnPush`
+## Use `ChangeDetection.OnPush`
 
-By default, all components are using `ChangeDetectionStrategy.Default`.
+By default, all angular component using `ChangeDetectionStrategy.Default`.
 This means a component will be checked (template bindings will be re-evaluated) every time any action happens on the page.
 This can cause severe performance issues.
 
@@ -126,7 +121,7 @@ You should aim to use `ChangeDetectionStrategy.OnPush` in all your components.
 
 ### AppComponent
 
-Let's do one simple but significant change and make our `AppComponent` use `ChangeDetectionStrategy.OnPush` changeDetection.
+Let's do one simple but significant change and make our `AppComponent` use `ChangeDetectionStrategy.OnPush` changeDetection
 
 <details>
     <summary>Use ChangeDetection OnPush</summary>
@@ -138,8 +133,8 @@ Let's do one simple but significant change and make our `AppComponent` use `Chan
   selector: 'app-root',
   template: `
     <app-shell>
-      <dirty-checks />
-      <router-outlet />
+      <dirty-checks></dirty-checks>  
+      <router-outlet></router-outlet>
     </app-shell>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -156,7 +151,7 @@ way lower than before. This is because the Component now only re-renders when be
 In the first example we investigated rendering cycles with the `DirtyChecksComponent` & applied `OnPush` in our root component.
 Let's do the same for a `LeafComponent` to get a deeper understanding of rendering cycles in the context of the `ComponentTree`.
 
-* add the `<dirty-checks />` component to the `MovieCardComponent`s template
+* add the `dirty-checks` component to the `MovieCardComponent`s template
 * serve the application, interact with the page and observe the counter in the `MovieCardComponent`
 * apply `ChangeDetectionStrategy.OnPush` to `MovieCardComponent`
 * serve the application, interact with the page and observe the counter in the `MovieCardComponent`
@@ -171,7 +166,7 @@ Let's do the same for a `LeafComponent` to get a deeper understanding of renderi
      [tilt]="40"
      (click)="movieClicked()">
 
-  <dirty-checks />
+  <dirty-checks></dirty-checks>
   <!-- other template -->
 </div>
 ```
@@ -193,7 +188,7 @@ export class MovieCardComponent {}
 ### Bonus: more ChangeDetectionStrategy.OnPush
 
 Try to think about other components that would benefit from the `OnPush` `ChangeDetectionStrategy` and apply it.
-Make sure to first use the `<dirty-checks />` component in order to measure the improvement.
+Make sure to first use the `dirty-checks` component in order to measure the improvement.
 
 Feel free to ask questions if anything unexpected happens.
 

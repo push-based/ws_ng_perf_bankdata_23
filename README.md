@@ -32,16 +32,9 @@ npm run start
 
 ## Exercises
 
-* [Reactive Fundamentals](./exercises/)
+* [Reactive Fundamentals]() - Live demo + StackBlitz
 * [JS Event Loop](./exercises/event-loop.md)
-* [Signal introduction](exercises%2Fsignal-introduction.md)
-* [Computed](exercises%2Fcomputed.md)
-* [Effect introduction](exercises%2Feffect.md)
 * [Change Detection - OnPush](./exercises/change-detection%20-%20OnPush.md)
-* [Mix http with signals](exercises%2Fhttp-with-signals.md)
-* [Local State w/ signals & observables](exercises%2Flocal-state.md)
-* [Global State w/ signals & observables](exercises%2Fglobal-state.md)
-* [Side effects & actions](exercises%2Fside-effects-actions.md)
 
 **Modern Angular Tasting Package:**  
 * [New Control Flow](exercises%2Fnew-control-flow.md)

@@ -21,7 +21,7 @@ If not already the case, insert the `dirty-checks` component into the `MovieCard
 
 <div class="movie-card"
      [tilt]="40">
-  <dirty-checks />
+  <dirty-checks></dirty-checks>
   <!--  the template-->
 </div>
 
@@ -103,7 +103,6 @@ We want to create a stream for each `HostListener`. Instead of setting a global 
 should return a string resembling the wanted style for the `transform` property. (e.g. `rotate(0deg)` for `mouseleave`).
 
 **Streams**
-
 * `rotate$` => `fromEvent(..., 'mouseenter')`
   * apply mapping from `HostListener` to an rxjs
   * `map` => `rotate(${this.rotationDegree}deg)`
